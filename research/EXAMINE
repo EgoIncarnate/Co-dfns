@@ -1,0 +1,8 @@
+Some things that might be worth examining
+
+Polyhedral models for overlap computation
+REPA N-dimensional array library for Haskell
+	http://hackage.haskell.org/package/repa
+	http://www.haskell.org/haskellwiki/Numeric_Haskell:_A_Vector_Tutorial
+Concurrent Program Logics
+	https://wiki.mpi-sws.org/star/cpl
