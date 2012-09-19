@@ -1,0 +1,93 @@
+These are the sets of theorems that are defined by MoA:
+
+Section II
+
+  0. Notation
+  
+    These are my own notations to fit within modern APL notation and conventions.
+  
+    A ≡ array
+    A^n ≡ n-dimensional array
+    V ≡ vector
+    S ≡ scalar
+    M ≡ matrix
+    ∆ ≡ delta
+    ⍝ ≡ Comment or note
+    
+    Association is right-to-left in absence of parentheses.
+  
+  1. Arrays and their Structure
+  
+    (0.0)  ∆A^n ≡ n ⍝ Definition 1.0, dimensionality
+           ⍴A ≡ <i[0] ... i[(∆A)-1]> ⍝ Definition 1.0, shape
+                                     ⍝ i ∊ Nat
+           ⍴S ≡ ⍬ ≡ <>
+           ⍴⍬ ≡ <0>
+           ⍬^n ≡ n-d empty array, ∆⍬^n ≥ 1, ∃i∊⍴⍬^n. i=0
+           ⍴⍴A ≡ <∆A> ⍝ Rank of A
+           ⍴⍴⍴A ≡ <1> 
+           ⍴⍴S ≡ ⍴⍬ ≡ <0>
+          
+  2. Selection of Array Entries
+  
+           A^n[i[0];...;i[n-1]] ⍝ Element of A^n for n≥1, within bounds
+                                ⍝ 0≤i[j]<(⍴A^n)[j]
+    (2.00) V⌷A^n ≡ A^n[V[0];...;V[n-1]] ⍝ n≥1 and ⍴V = <n> 
+                                        ⍝ and ∀0≤j<n. 0≤V[j]<(⍴A^n)[j]
+    (2.01) ⍬⌷S ≡ S ⍝ Scalar extension
+    
+    (2.10) A1 .R. A2 ←→ ((⍴A1) ≡ ⍴A2) ∧ ∀V∊Valid ⍴A1. (V⌷A1) R (V⌷A2)
+           ⍝ Point-wise extension of relation R
+    
+    (2.11) S .R. A ←→ ∀V∊Valid ⍴A. S R V⌷A
+           A .R. S ←→ ∀V∊Valid ⍴A. (V⌷A) R S
+           ⍝ Scalar extension of .R.
+           
+           V∊Valid ⍴A ≡ 0 .≤. V .≤. (⍴A^n)
+           
+  3. Flattening an Array
+  
+    Definition 3.0 - Ravel - ,A
+    
+           ,A^n ≡ <e ...> ⍝ All element of A^n in row major order
+           ,S ≡ <S>
+           ,V ≡ V
+           ⍴,V ≡ ⍴V
+           ⍴,S ≡ <1>
+           ,⍬ ≡ ⍬
+           ⍴,A^n ≡ ,(Prod_i=0^n-1 (⍴A^n)[i]) ⍝ Right-hand ravel
+                                             ⍝ ensure correct shape
+           A^n[i[0];...;i[n-1]] ≡ 
+             (,A^n)[(((((i[0]×V[1])+i[1])×V[2])+...)×V[n-1])+i[n-1]]
+           ⍝ Correspondence of A^n and (,A^n) where
+           ⍝ V ≡ ⍴A^n ≡ <V[0] ... V[n-1]
+           
+    Definition 3.1 - Pi - Pi V
+   
+           Pi V ≡ Prod_(i=0)^((⍴V)[0]-1) V[i]
+           Pi ⍬ ≡ 1
+           
+    Definition 3.2 - Total - Tau A
+    
+           Tau A^n ≡ Pi ⍴A^n
+           
+           ⍴,A^n ≡ ,Tau A^n
+           Tau S ≡ 1
+           
+    Definition 3.3 - Gamma - Gamma Va Vb
+    
+           Gamma ⍬ ⍬ ≡ 0
+           Gamma <a> <b> ≡ a
+           Gamma <a[0] ... a[j-1]> <b[0] ... b[j-1]> 
+             ≡ a[j-1] + b[j-1] × Gamma <a[0] ... a[j-2]> <b[0] ... b[j-2]>
+           
+           0 .<. Vx ⇒ Gamma Vi Vx where 0 .≤. Vi .<. Vx establishes
+             {Vi : 0 .≤. Vi .<. Vx} ← 1-to-1 → [0, Pi Vx).
+             
+           0 .≤. Vi .<. ⍴A ⇒ 0 ≤ (Gamma Vi (⍴A)) < Tau A
+           
+    (3.31) Vi⌷A ≡ (,A)[Gamma Vi (⍴A)]
+    
+    Definition 3.4 - Gamma' - Gamma' N Vx
+    
+    
